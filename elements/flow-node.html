@@ -10,7 +10,7 @@
             .node {
                 width: 200px;
                 height: 50px;
-                background-color: #4285f4;;
+                background-color: transparent;
                 border-radius: 5px;
                 text-align: center;
                 line-height: 50px;
@@ -65,7 +65,8 @@
             <paper-input floatingLabel label="Line Bottom" value="{{node.lineLengthBottom}}" validate="^[0-9]*$" error="Input is not a number!" style="font-size: 18px; font-weight: bold"></paper-input><br />
             <paper-input floatingLabel label="Line Right" value="{{node.lineLengthRight}}" validate="^[0-9]*$" error="Input is not a number!" style="font-size: 18px; font-weight: bold"></paper-input><br />
 
-            <paper-button label="Ok" affirmative default></paper-button>
+            <paper-button label="Delete" icon="delete" on-click="{{delete}}" dismissive></paper-button>
+            <paper-button label="Ok" icon="check" affirmative default></paper-button>
 
             </div>
 
@@ -76,6 +77,9 @@
         Polymer('flow-node', {
             select: function () {
                 this.$.settings.opened = true;
+            },
+            delete: function () {
+                alert('TODO: delete');
             }
         });
     </script>

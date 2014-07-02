@@ -1,0 +1,142 @@
+{"title": "IMT Duncan Process Flow", "nodes": [
+    {
+        "text": "Product Flow Procedure",
+        "top": "50",
+        "left": "50",
+        "width": 200,
+        "height": 50,
+        "lineLengthBottom": "",
+        "lineLengthRight": "",
+        "bgColor": "#333333"
+    },
+    {
+        "text": "Incoming Inspection",
+        "top": "150",
+        "left": "50",
+        "width": 200,
+        "height": 50,
+        "lineLengthBottom": "50",
+        "lineLengthRight": "",
+        "bgColor": "#4285f4"
+    },
+    {
+        "text": "Order Exception",
+        "top": "250",
+        "left": "50",
+        "width": 200,
+        "height": 50,
+        "lineLengthBottom": "50",
+        "lineLengthRight": "",
+        "bgColor": "#4285f4"
+    },
+    {
+        "text": "Re-Work Review",
+        "top": "350",
+        "left": "50",
+        "width": 200,
+        "height": 50,
+        "lineLengthBottom": "50",
+        "lineLengthRight": "",
+        "bgColor": "#4285f4"
+    },
+    {
+        "text": "Containment",
+        "top": "450",
+        "left": "50",
+        "width": 200,
+        "height": 50,
+        "lineLengthBottom": "50",
+        "lineLengthRight": "",
+        "bgColor": "#4285f4"
+    },
+    {
+        "text": "Process Product",
+        "top": "550",
+        "left": "50",
+        "width": 200,
+        "height": 50,
+        "lineLengthBottom": "50",
+        "lineLengthRight": "",
+        "bgColor": "#4285f4"
+    },
+    {
+        "text": "Empty Con/Stray Parts",
+        "top": "650",
+        "left": "50",
+        "width": 200,
+        "height": 50,
+        "lineLengthBottom": "",
+        "lineLengthRight": "",
+        "bgColor": "#4285f4"
+    },
+    {
+        "text": "Maintenance",
+        "top": "50",
+        "left": "350",
+        "width": 200,
+        "height": 50,
+        "lineLengthBottom": "",
+        "lineLengthRight": "",
+        "bgColor": "#333333"
+    },
+    {
+        "text": "Employee Req System",
+        "top": "150",
+        "left": "350",
+        "width": 200,
+        "height": 50,
+        "lineLengthBottom": "",
+        "lineLengthRight": "",
+        "bgColor": "#4285f4"
+    },
+    {
+        "text": "Recurring Task System",
+        "top": "250",
+        "left": "350",
+        "width": 200,
+        "height": 50,
+        "lineLengthBottom": "",
+        "lineLengthRight": "",
+        "bgColor": "#4285f4"
+    },
+    {
+        "text": "Purchasing System",
+        "top": "350",
+        "left": "350",
+        "width": 200,
+        "height": 50,
+        "lineLengthBottom": "",
+        "lineLengthRight": "",
+        "bgColor": "#4285f4"
+    },
+    {
+        "text": "Calibration",
+        "top": "50",
+        "left": "650",
+        "width": 200,
+        "height": 50,
+        "bgColor": "#333333",
+        "lineLengthBottom": "",
+        "lineLengthRight": ""
+    },
+    {
+        "text": "Purchasing",
+        "top": "50",
+        "left": "950",
+        "width": 200,
+        "height": 50,
+        "bgColor": "#333333",
+        "lineLengthBottom": "",
+        "lineLengthRight": ""
+    },
+    {
+        "text": "Test",
+        "bgColor": "#4285f4",
+        "top": "450",
+        "left": "700",
+        "width": 200,
+        "height": 50,
+        "lineLengthBottom": "",
+        "lineLengthRight": ""
+    }
+]}
