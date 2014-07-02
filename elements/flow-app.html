@@ -15,12 +15,18 @@
                 height: 100%;
                 overflow: hidden;
             }
+
+            paper-button {
+                display: block;
+            }
         </style>
 
 
         <float-drawer>
             <h1>Menu</h1>
-            <core-icon-button icon="menu"></core-icon-button>
+            <paper-button label="Save" on-click="{{save}}"></paper-button>
+            <paper-button label="Reload" on-click="{{load}}"></paper-button>
+            <paper-button label="Add Node" on-click="{{addNode}}"></paper-button>
         </float-drawer>
 
         <flow-diagram data="{{data}}"></flow-diagram>
@@ -31,21 +37,27 @@
     </template>
     <script>
         Polymer('flow-app', {
-            toggle: function () {
-                var test = this.$.mydrawer;
-
-                if(test.togglePanel){
-                    console.log(test.selected);
-                    console.log('toggle!');
-                    test.togglePanel();
-                    console.log(test.selected);
-                    test.queryMatchesChanged();
-                } else
-                    console.log('nope');
-                console.log('done');
+            ready: function () {
+                this.load();
+            },
+            load: function () {
+                var d = localStorage.getItem('diagram1');
+                if(d)
+                    this.data = JSON.parse(d);
+                else
+                    this.data = {};
             },
             save: function() {
-                alert('save!');
+                localStorage.setItem('diagram1', JSON.stringify(this.data));
+            },
+            addNode: function () {
+                this.data.nodes.push({
+                    text: 'New Node',
+                    top: 0,
+                    left: 0,
+                    width: 200,
+                    height: 50
+                });
             }
         });
     </script>

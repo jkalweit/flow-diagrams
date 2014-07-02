@@ -15,7 +15,6 @@
                 text-align: center;
                 line-height: 50px;
                 color: white;
-                padding: 10px;
                 z-index: 1;
             }
 
@@ -43,13 +42,13 @@
             }
         </style>
 
-        <div class="node" style="position: absolute; top: {{node.top}}px; left: {{node.left}}px; width: {{node.width}}px; height: {{node.height}}px;" on-click="{{select}}">
+        <div class="node" style="background-color: {{node.bgColor}}; position: absolute; top: {{node.top}}px; left: {{node.left}}px; width: {{node.width}}px; height: {{node.height}}px;" on-click="{{select}}">
             <span>{{node.text}}</span>
             <paper-shadow z="{{$.settings.opened ? 2 : 0}}"></paper-shadow>
 
-            <div class="line bottom-line" style="top: {{node.height+20}}px; left: {{(node.width/2)+10}}px; width: {{node.lineLengthBottom}}px"></div>
+            <div class="line bottom-line" style="top: {{node.height}}px; left: {{node.width/2}}px; width: {{node.lineLengthBottom}}px"></div>
 
-            <div class="line right-line" style="top: {{(node.height/2)+10}}px; left: {{node.width+20}}px; width: {{node.lineLengthRight}}px"></div>
+            <div class="line right-line" style="top: {{node.height/2}}px; left: {{node.width}}px; width: {{node.lineLengthRight}}px"></div>
         </div>
 
 
@@ -58,6 +57,7 @@
             <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: white; z-index: -1; opacity: .75;"></div>
             <br/>
             <paper-input floatingLabel label="Text" value="{{node.text}}" style="font-size: 24px; font-weight: bold"></paper-input><br />
+            <paper-input floatingLabel label="Color" value="{{node.bgColor}}" style="font-size: 24px; font-weight: bold; color: #777777; background-color: {{node.bgColor}}"></paper-input><br />
             <paper-input floatingLabel label="Width" value="{{node.width}}" validate="^[0-9]*$" error="Input is not a number!" style="font-size: 18px; font-weight: bold"></paper-input><br />
             <paper-input floatingLabel label="Height" value="{{node.height}}" validate="^[0-9]*$" error="Input is not a number!" style="font-size: 18px; font-weight: bold"></paper-input><br />
             <paper-input floatingLabel label="Top" value="{{node.top}}" validate="^[0-9]*$" error="Input is not a number!" style="font-size: 18px; font-weight: bold"></paper-input><br />
