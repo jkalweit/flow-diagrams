@@ -1,0 +1,47 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/paper-shadow/paper-shadow.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+
+<polymer-element name="float-drawer">
+    <template>
+        <style>
+            :host {
+                position: absolute;
+                top: 0px;
+                right: 0px;
+                width: 20px;
+                height: 100%;
+                background-color: white;
+                padding: 10px;
+                z-index: 3;
+                transition: width .5s ease-in-out;
+                overflow: hidden;
+            }
+
+        </style>
+        <paper-shadow z="2"></div>
+
+        <div style="width: 200px; height: 100%; background-color: red; overflow: hidden">
+
+            <paper-button label="{{toggleLabel}}" on-click="{{toggle}}" style="font-weight: bold; font-size: 20px; color: #333333;"></paper-button>
+            <div style="padding-left: 20px;">
+                <content></content>
+            </div>
+        </div>
+
+    </template>
+    <script>
+        Polymer('float-drawer', {
+            toggleLabel: '<',
+            toggle: function () {
+                console.log('toggle ' + this.style.right);
+                if(this.style.width != "200px")
+                    this.style.width = "200px";
+                else
+                    this.style.width = "20px";
+
+                this.toggleLabel = this.style.width == '20px' ? '<' : '>'
+            }
+        });
+    </script>
+</polymer-element>

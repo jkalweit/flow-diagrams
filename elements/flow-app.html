@@ -1,0 +1,52 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/core-icon-button/core-icon-button.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="float-drawer.html">
+<link rel="import" href="flow-diagram.html">
+
+<polymer-element name="flow-app" attributes="data">
+    <template>
+        <style>
+            :host {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                overflow: hidden;
+            }
+        </style>
+
+
+        <float-drawer>
+            <h1>Menu</h1>
+            <core-icon-button icon="menu"></core-icon-button>
+        </float-drawer>
+
+        <flow-diagram data="{{data}}"></flow-diagram>
+
+
+
+
+    </template>
+    <script>
+        Polymer('flow-app', {
+            toggle: function () {
+                var test = this.$.mydrawer;
+
+                if(test.togglePanel){
+                    console.log(test.selected);
+                    console.log('toggle!');
+                    test.togglePanel();
+                    console.log(test.selected);
+                    test.queryMatchesChanged();
+                } else
+                    console.log('nope');
+                console.log('done');
+            },
+            save: function() {
+                alert('save!');
+            }
+        });
+    </script>
+</polymer-element>

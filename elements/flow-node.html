@@ -1,6 +1,7 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
+<link rel="import" href="../bower_components/paper-dialog/paper-dialog-transition.html">
 <link rel="import" href="../bower_components/paper-input/paper-input.html">
 
 <polymer-element name="flow-node" attributes="node">
@@ -15,6 +16,7 @@
                 line-height: 50px;
                 color: white;
                 padding: 10px;
+                z-index: 1;
             }
 
             .node:hover {
@@ -26,45 +28,42 @@
                 min-width: 430px;
             }
 
-            /*paper-button {*/
-                /*margin: 1em;*/
-                /*width: 10em;*/
-            /*}*/
+            .line {
+                position: absolute;
+                background-color: #333333;
+                width: 0px;
+                height: 3px;
+            }
 
-            /*paper-button.colored {*/
-                /*color: #4285f4;*/
-                /*background: #4285f4;*/
-                /*transition: background 1s ease-in-out;*/
-                /*color: #fff;*/
-            /*}*/
-
-
-            /*paper-button.colored #ripple,*/
-            /*paper-button.colored::shadow #ripple {*/
-                /*color: #2a56c6;*/
-            /*}*/
-
-            /*paper-button.colored.selected {*/
-                /*background: red;*/
-            /*}*/
+            .line.bottom-line {
+                -webkit-transform: rotate(90deg);
+                -webkit-transform-origin:0% 0%;
+            }
+            .line.right-line {
+            }
         </style>
-        <!--<paper-button class="{{ {colored: true, selected: selected} | tokenList }}" label="{{node.text}}"-->
-                      <!--style="position: absolute; top: {{node.top}}px; left: {{node.left}}px;" on-click="{{select}}"></paper-button>-->
+
         <div class="node" style="position: absolute; top: {{node.top}}px; left: {{node.left}}px; width: {{node.width}}px; height: {{node.height}}px;" on-click="{{select}}">
             <span>{{node.text}}</span>
             <paper-shadow z="{{$.settings.opened ? 2 : 0}}"></paper-shadow>
+
+            <div class="line bottom-line" style="top: {{node.height+20}}px; left: {{(node.width/2)+10}}px; width: {{node.lineLengthBottom}}px"></div>
+
+            <div class="line right-line" style="top: {{(node.height/2)+10}}px; left: {{node.width+20}}px; width: {{node.lineLengthRight}}px"></div>
         </div>
 
-        <div style="width: 50px; height: 3px; background-color: black; position: absolute; top: {{node.top + node.height + 20}}px; left: {{node.left + (node.width / 2) + 10}}px; -webkit-transform: rotate(90deg); -webkit-transform-origin:0% 0%;">
 
-        <paper-dialog id="settings" heading="Settings" transition="paper-dialog-transition-bottom">
 
+        <paper-dialog id="settings" transition="paper-dialog-transition-bottom" style="background-color: transparent">
+            <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: white; z-index: -1; opacity: .75;"></div>
             <br/>
             <paper-input floatingLabel label="Text" value="{{node.text}}" style="font-size: 24px; font-weight: bold"></paper-input><br />
             <paper-input floatingLabel label="Width" value="{{node.width}}" validate="^[0-9]*$" error="Input is not a number!" style="font-size: 18px; font-weight: bold"></paper-input><br />
             <paper-input floatingLabel label="Height" value="{{node.height}}" validate="^[0-9]*$" error="Input is not a number!" style="font-size: 18px; font-weight: bold"></paper-input><br />
             <paper-input floatingLabel label="Top" value="{{node.top}}" validate="^[0-9]*$" error="Input is not a number!" style="font-size: 18px; font-weight: bold"></paper-input><br />
             <paper-input floatingLabel label="Left" value="{{node.left}}" validate="^[0-9]*$" error="Input is not a number!" style="font-size: 18px; font-weight: bold"></paper-input><br />
+            <paper-input floatingLabel label="Line Bottom" value="{{node.lineLengthBottom}}" validate="^[0-9]*$" error="Input is not a number!" style="font-size: 18px; font-weight: bold"></paper-input><br />
+            <paper-input floatingLabel label="Line Right" value="{{node.lineLengthRight}}" validate="^[0-9]*$" error="Input is not a number!" style="font-size: 18px; font-weight: bold"></paper-input><br />
 
             <paper-button label="Ok" affirmative default></paper-button>
 
