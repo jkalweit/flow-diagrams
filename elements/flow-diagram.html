@@ -1,0 +1,18 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/paper-input/paper-input.html">
+<link rel="import" href="flow-node.html">
+
+<polymer-element name="flow-diagram" attributes="data">
+    <template>
+        <paper-input label="Title" value="{{data.title}}" style="font-size: 30px; font-weight: bold"></paper-input>
+        <div style="position: absolute; top: 150px; left: 0px; width: 100%; height: 100%; background-color: #dddddd">
+            <template repeat="{{node in data.nodes}}">
+                <flow-node node="{{node}}"></flow-node>
+            </template>
+        </div>
+    </template>
+    <script>
+        Polymer('flow-diagram', {
+        });
+    </script>
+</polymer-element>

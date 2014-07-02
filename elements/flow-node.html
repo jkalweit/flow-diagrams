@@ -1,0 +1,83 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
+<link rel="import" href="../bower_components/paper-input/paper-input.html">
+
+<polymer-element name="flow-node" attributes="node">
+    <template>
+        <style>
+            .node {
+                width: 200px;
+                height: 50px;
+                background-color: #4285f4;;
+                border-radius: 5px;
+                text-align: center;
+                line-height: 50px;
+                color: white;
+                padding: 10px;
+            }
+
+            .node:hover {
+                opacity: .75;
+            }
+
+            paper-dialog {
+                width: 50%;
+                min-width: 430px;
+            }
+
+            /*paper-button {*/
+                /*margin: 1em;*/
+                /*width: 10em;*/
+            /*}*/
+
+            /*paper-button.colored {*/
+                /*color: #4285f4;*/
+                /*background: #4285f4;*/
+                /*transition: background 1s ease-in-out;*/
+                /*color: #fff;*/
+            /*}*/
+
+
+            /*paper-button.colored #ripple,*/
+            /*paper-button.colored::shadow #ripple {*/
+                /*color: #2a56c6;*/
+            /*}*/
+
+            /*paper-button.colored.selected {*/
+                /*background: red;*/
+            /*}*/
+        </style>
+        <!--<paper-button class="{{ {colored: true, selected: selected} | tokenList }}" label="{{node.text}}"-->
+                      <!--style="position: absolute; top: {{node.top}}px; left: {{node.left}}px;" on-click="{{select}}"></paper-button>-->
+        <div class="node" style="position: absolute; top: {{node.top}}px; left: {{node.left}}px; width: {{node.width}}px; height: {{node.height}}px;" on-click="{{select}}">
+            <span>{{node.text}}</span>
+            <paper-shadow z="{{$.settings.opened ? 2 : 0}}"></paper-shadow>
+        </div>
+
+        <div style="width: 50px; height: 3px; background-color: black; position: absolute; top: {{node.top + node.height + 20}}px; left: {{node.left + (node.width / 2) + 10}}px; -webkit-transform: rotate(90deg); -webkit-transform-origin:0% 0%;">
+
+        <paper-dialog id="settings" heading="Settings" transition="paper-dialog-transition-bottom">
+
+            <br/>
+            <paper-input floatingLabel label="Text" value="{{node.text}}" style="font-size: 24px; font-weight: bold"></paper-input><br />
+            <paper-input floatingLabel label="Width" value="{{node.width}}" validate="^[0-9]*$" error="Input is not a number!" style="font-size: 18px; font-weight: bold"></paper-input><br />
+            <paper-input floatingLabel label="Height" value="{{node.height}}" validate="^[0-9]*$" error="Input is not a number!" style="font-size: 18px; font-weight: bold"></paper-input><br />
+            <paper-input floatingLabel label="Top" value="{{node.top}}" validate="^[0-9]*$" error="Input is not a number!" style="font-size: 18px; font-weight: bold"></paper-input><br />
+            <paper-input floatingLabel label="Left" value="{{node.left}}" validate="^[0-9]*$" error="Input is not a number!" style="font-size: 18px; font-weight: bold"></paper-input><br />
+
+            <paper-button label="Ok" affirmative default></paper-button>
+
+            </div>
+
+        </paper-dialog>
+
+    </template>
+    <script>
+        Polymer('flow-node', {
+            select: function () {
+                this.$.settings.opened = true;
+            }
+        });
+    </script>
+</polymer-element>
