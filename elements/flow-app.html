@@ -46,11 +46,9 @@
                     this.data = JSON.parse(d);
                 else
                     this.data = { title: 'New Diagram', "currentNodeId": 0, nodes: [] };
-                this.$.drawer.close();
             },
             save: function() {
                 localStorage.setItem('diagram1', JSON.stringify(this.data));
-                this.$.drawer.close();
             },
             loadDemo: function () {
                 var xobj = new XMLHttpRequest();
@@ -59,7 +57,6 @@
                 xobj.onreadystatechange = function () {
                     if (xobj.readyState == 4 && xobj.status == "200") {
                         this.data = JSON.parse(xobj.responseText);
-                        this.$.drawer.close();
                     }
                 }.bind(this);
                 xobj.send(null);

@@ -7,19 +7,28 @@
 <polymer-element name="flow-node" attributes="node">
     <template>
         <style>
-            .node {
-                width: 200px;
-                height: 50px;
-                background-color: transparent;
-                border-radius: 5px;
-                text-align: center;
-                line-height: 50px;
-                color: white;
-                z-index: 1;
+            :host {
+                position: absolute;
+                top: {{node.top}}px;
+                left: {{node.left}}px;
+                width: {{node.width}}px;
+                height: {{node.height}}px;
             }
 
-            .node:hover {
-                opacity: .75;
+            .node {
+                position: absolute;
+                border-radius: 5px;
+                color: white;
+
+                top: 0px;
+                left: 0px;
+                width: 100%;
+                height: 100%;
+
+                text-align: center;
+                z-index: 1;
+                line-height: {{node.height}}px;
+                background: {{node.bgColor}};
             }
 
             paper-dialog {
@@ -31,7 +40,8 @@
                 position: absolute;
                 background-color: #333333;
                 width: 0px;
-                height: 3px;
+                height: 4px;
+                z-index: 0;
             }
 
             .line.bottom-line {
@@ -40,17 +50,50 @@
             }
             .line.right-line {
             }
+            .handle {
+                position: absolute;
+                width: 10px;
+                height: 10px;
+                background-color: black;
+            }
+            .handle.line {
+                background-color: #00FF00;
+            }
+
+            .overlay {
+                opacity: 0;
+                position: absolute;
+                top: 0;
+                left: 0;
+                height: 100%;
+                width: 100%;
+            }
+
+            .overlay:hover {
+                opacity: .5;
+            }
         </style>
 
-        <div class="node" style="background-color: {{node.bgColor}}; position: absolute; top: {{node.top}}px; left: {{node.left}}px; width: {{node.width}}px; height: {{node.height}}px;" on-click="{{select}}">
+        <div class="node" style="">
+
+            <div class="overlay">
+                <div class="handle line" style="bottom: 0; left: {{(node.width / 2) - 5}}px;" on-click="{{toggleLineBottom}}">
+                </div>
+                <div class="handle line" style="top: {{(node.height / 2) - 5}}px; right: 0" on-click="{{toggleLineRight}}">
+                </div>
+                <div class="handle" style="top: 0; right: 0;" on-mousedown="{{drag}}">
+                </div>
+                <div class="handle" style="top: 0; left: 0; background-color: white;" on-click="{{select}}">
+                </div>
+            </div>
+
             <span>{{node.text}}</span>
-            <paper-shadow z="{{$.settings.opened ? 2 : 0}}"></paper-shadow>
-
-            <div class="line bottom-line" style="top: {{node.height}}px; left: {{node.width/2}}px; width: {{node.lineLengthBottom}}px"></div>
-
-            <div class="line right-line" style="top: {{node.height/2}}px; left: {{node.width}}px; width: {{node.lineLengthRight}}px"></div>
+            <paper-shadow z="{{$.settings.opened || dragging ? 2 : 1}}"></paper-shadow>
         </div>
 
+        <div class="line bottom-line" style="top: {{node.height}}px; left: {{(node.width/2)+2}}px; width: {{node.lineLengthBottom}}px"></div>
+
+        <div class="line right-line" style="top: {{(node.height/2)-2}}px; left: {{node.width}}px; width: {{node.lineLengthRight}}px"></div>
 
 
         <paper-dialog id="settings" transition="paper-dialog-transition-bottom" style="background-color: transparent">
@@ -60,8 +103,8 @@
             <paper-input floatingLabel label="Color" value="{{node.bgColor}}" style="font-size: 24px; font-weight: bold; color: #777777; background-color: {{node.bgColor}}"></paper-input><br />
             <paper-input floatingLabel label="Width" value="{{node.width}}" validate="^[0-9]*$" error="Input is not a number!" style="font-size: 18px; font-weight: bold"></paper-input><br />
             <paper-input floatingLabel label="Height" value="{{node.height}}" validate="^[0-9]*$" error="Input is not a number!" style="font-size: 18px; font-weight: bold"></paper-input><br />
-            <paper-input floatingLabel label="Top" value="{{node.top}}" validate="^[0-9]*$" error="Input is not a number!" style="font-size: 18px; font-weight: bold"></paper-input><br />
-            <paper-input floatingLabel label="Left" value="{{node.left}}" validate="^[0-9]*$" error="Input is not a number!" style="font-size: 18px; font-weight: bold"></paper-input><br />
+            <!--<paper-input floatingLabel label="Top" value="{{node.top}}" validate="^[0-9]*$" error="Input is not a number!" style="font-size: 18px; font-weight: bold"></paper-input><br />-->
+            <!--<paper-input floatingLabel label="Left" value="{{node.left}}" validate="^[0-9]*$" error="Input is not a number!" style="font-size: 18px; font-weight: bold"></paper-input><br />-->
             <paper-input floatingLabel label="Line Bottom" value="{{node.lineLengthBottom}}" validate="^[0-9]*$" error="Input is not a number!" style="font-size: 18px; font-weight: bold"></paper-input><br />
             <paper-input floatingLabel label="Line Right" value="{{node.lineLengthRight}}" validate="^[0-9]*$" error="Input is not a number!" style="font-size: 18px; font-weight: bold"></paper-input><br />
 
@@ -75,11 +118,52 @@
     </template>
     <script>
         Polymer('flow-node', {
+            dragging: false,
+            dragnodestart: null,
+            dragstart: null,
             select: function () {
                 this.$.settings.opened = true;
             },
+            drag: function (e) {
+                this.dragnodestart = [this.node.left, this.node.top];
+                this.dragstart = [e.x, e.y];
+                document.addEventListener('mousemove', this.move.bind(this));
+                document.addEventListener('mouseup', this.drop.bind(this));
+                this.dragging = true;
+            },
+            move: function (e) {
+                if(this.dragging) {
+                    var diff = [e.x - this.dragstart[0], e.y - this.dragstart[1]];
+                    this.node.left = this.snapToGrid(this.dragnodestart[0] + diff[0], 25);
+                    this.node.top = this.snapToGrid(this.dragnodestart[1] + diff[1], 25);
+                }
+            },
+            drop: function (e) {
+                document.removeEventListener('mousemove', this.move);
+                document.removeEventListener('mouseup', this.drop);
+                this.dragging = false;
+            },
             delete: function () {
                 this.fire('delete', { id: this.node.id });
+            },
+            snapToGrid: function (val, grid) {
+                var offset = val % grid;
+                if(offset < (grid / 2))
+                    return val - offset;
+                else
+                    return val + (grid - offset);
+            },
+            toggleLineBottom: function() {
+                this.toggleLine('lineLengthBottom');
+            },
+            toggleLineRight: function() {
+                this.toggleLine('lineLengthRight');
+            },
+            toggleLine: function (prop) {
+                if(this.node[prop] == 0)
+                    this.node[prop] = 50;
+                else
+                    this.node[prop] = 0;
             }
         });
     </script>

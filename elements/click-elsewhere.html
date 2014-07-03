@@ -14,6 +14,7 @@
 
                     if(e.x >= rect.left && e.x < rect.right && e.y >= rect.top && e.y < rect.bottom) {
                         //console.log('inside!');
+                        this.fire('clickinside', null);
                     } else {
                         this.fire('clickoutside', null);
                         //console.log('outside!');
