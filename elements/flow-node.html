@@ -79,7 +79,7 @@
                 this.$.settings.opened = true;
             },
             delete: function () {
-                alert('TODO: delete');
+                this.fire('delete', { id: this.node.id });
             }
         });
     </script>

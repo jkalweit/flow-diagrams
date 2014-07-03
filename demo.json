@@ -1,5 +1,8 @@
-{"title": "IMT Duncan Process Flow", "nodes": [
+{"title": "IMT Duncan Process Flow",
+    "currentNodeId": 0,
+    "nodes": [
     {
+        "id": 0,
         "text": "Product Flow Procedure",
         "top": "50",
         "left": "50",
@@ -10,6 +13,7 @@
         "bgColor": "#333333"
     },
     {
+        "id": 1,
         "text": "Incoming Inspection",
         "top": "150",
         "left": "50",
@@ -20,6 +24,7 @@
         "bgColor": "#4285f4"
     },
     {
+        "id": 2,
         "text": "Order Exception",
         "top": "250",
         "left": "50",
@@ -30,6 +35,7 @@
         "bgColor": "#4285f4"
     },
     {
+        "id": 3,
         "text": "Re-Work Review",
         "top": "350",
         "left": "50",
@@ -40,6 +46,7 @@
         "bgColor": "#4285f4"
     },
     {
+        "id": 4,
         "text": "Containment",
         "top": "450",
         "left": "50",
@@ -50,6 +57,7 @@
         "bgColor": "#4285f4"
     },
     {
+        "id": 5,
         "text": "Process Product",
         "top": "550",
         "left": "50",
@@ -60,6 +68,7 @@
         "bgColor": "#4285f4"
     },
     {
+        "id": 6,
         "text": "Empty Con/Stray Parts",
         "top": "650",
         "left": "50",
@@ -70,6 +79,7 @@
         "bgColor": "#4285f4"
     },
     {
+        "id": 7,
         "text": "Maintenance",
         "top": "50",
         "left": "350",
@@ -80,6 +90,7 @@
         "bgColor": "#333333"
     },
     {
+        "id": 8,
         "text": "Employee Req System",
         "top": "150",
         "left": "350",
@@ -90,6 +101,7 @@
         "bgColor": "#4285f4"
     },
     {
+        "id": 9,
         "text": "Recurring Task System",
         "top": "250",
         "left": "350",
@@ -100,6 +112,7 @@
         "bgColor": "#4285f4"
     },
     {
+        "id": 10,
         "text": "Purchasing System",
         "top": "350",
         "left": "350",
@@ -110,6 +123,7 @@
         "bgColor": "#4285f4"
     },
     {
+        "id": 11,
         "text": "Calibration",
         "top": "50",
         "left": "650",
@@ -120,6 +134,7 @@
         "lineLengthRight": ""
     },
     {
+        "id": 13,
         "text": "Purchasing",
         "top": "50",
         "left": "950",
@@ -130,6 +145,7 @@
         "lineLengthRight": ""
     },
     {
+        "id": 14,
         "text": "Test",
         "bgColor": "#4285f4",
         "top": "450",

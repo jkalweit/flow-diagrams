@@ -21,7 +21,7 @@
         <paper-button label="Add Node" icon="add" on-click="{{addNode}}"></paper-button>
         <div style="position: absolute; top: 160px; left: 0px; width: 100%; height: 100%; background-color: #dddddd">
             <template repeat="{{node in data.nodes}}">
-                <flow-node node="{{node}}"></flow-node>
+                <flow-node node="{{node}}" on-delete="{{deleteNode}}"></flow-node>
             </template>
         </div>
     </template>
@@ -29,6 +29,7 @@
         Polymer('flow-diagram', {
             addNode: function () {
                 this.data.nodes.push({
+                    id: this.data.currentNodeId++,
                     text: 'New Node',
                     bgColor: '#4285f4',
                     top: 0,
@@ -36,6 +37,13 @@
                     width: 200,
                     height: 50
                 });
+            },
+            deleteNode: function (e) {
+                for(var i = 0; i < this.data.nodes.length; i++){
+                    if(this.data.nodes[i].id ==  e.detail.id) {
+                        this.data.nodes.splice(i, 1);
+                    }
+                }
             }
         });
     </script>

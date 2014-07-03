@@ -45,7 +45,7 @@
                 if(d !== null)
                     this.data = JSON.parse(d);
                 else
-                    this.data = { title: 'New Diagram', nodes: [] };
+                    this.data = { title: 'New Diagram', "currentNodeId": 0, nodes: [] };
                 this.$.drawer.close();
             },
             save: function() {
