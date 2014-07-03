@@ -23,9 +23,12 @@
 
 
         <float-drawer id="drawer">
-            <h1>Menu</h1>
-            <paper-button label="Save" icon="save" on-click="{{save}}"></paper-button>
-            <paper-button label="Reload" icon="undo" on-click="{{load}}"></paper-button>
+            <div style="width: 180px;">
+                <h1>Menu</h1>
+                <paper-button label="Save" icon="save" on-click="{{save}}" style="text-align: left"></paper-button>
+                <paper-button label="Reload" icon="undo" on-click="{{load}}" style="text-align: left"></paper-button>
+                <paper-button label="Load Demo" icon="undo" on-click="{{loadDemo}}" style="text-align: left"></paper-button>
+            </div>
         </float-drawer>
 
         <flow-diagram data="{{data}}"></flow-diagram>
@@ -43,10 +46,23 @@
                     this.data = JSON.parse(d);
                 else
                     this.data = { title: 'New Diagram', nodes: [] };
+                this.$.drawer.close();
             },
             save: function() {
                 localStorage.setItem('diagram1', JSON.stringify(this.data));
-                this.$.drawer.toggle();
+                this.$.drawer.close();
+            },
+            loadDemo: function () {
+                var xobj = new XMLHttpRequest();
+                xobj.overrideMimeType("application/json");
+                xobj.open('GET', 'demo.json', true);
+                xobj.onreadystatechange = function () {
+                    if (xobj.readyState == 4 && xobj.status == "200") {
+                        this.data = JSON.parse(xobj.responseText);
+                        this.$.drawer.close();
+                    }
+                }.bind(this);
+                xobj.send(null);
             }
         });
     </script>

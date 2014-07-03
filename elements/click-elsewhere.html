@@ -1,0 +1,25 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+
+<polymer-element name="click-elsewhere" attributes="clickelement">
+    <template>
+    </template>
+    <script>
+        Polymer('click-elsewhere', {
+            ready: function() {
+                document.addEventListener('click', function (e) {
+                    if(!this.clickelement)
+                        return;
+
+                    var rect = this.clickelement.getBoundingClientRect();
+
+                    if(e.x >= rect.left && e.x < rect.right && e.y >= rect.top && e.y < rect.bottom) {
+                        //console.log('inside!');
+                    } else {
+                        this.fire('clickoutside', null);
+                        //console.log('outside!');
+                    }
+                }.bind(this));
+            }
+        });
+    </script>
+</polymer-element>

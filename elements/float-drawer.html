@@ -1,6 +1,8 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/paper-shadow/paper-shadow.html">
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="click-elsewhere.html">
+
 
 <polymer-element name="float-drawer">
     <template>
@@ -19,9 +21,16 @@
             }
 
         </style>
+
+        <div id="clickTarget" style="position: absolute; top: 0;left: 0; height: 100%; width: 100%;">
+        </div>
+
+        <click-elsewhere clickelement="{{$.clickTarget}}" on-clickoutside="{{close}}"></click-elsewhere>
+
         <paper-shadow z="2"></div>
 
         <paper-button label="{{toggleLabel}}" on-click="{{toggle}}" style="font-weight: bold; font-size: 20px; color: #333333;"></paper-button>
+
         <div style="padding-left: 20px;">
             <content></content>
         </div>
@@ -29,14 +38,33 @@
     </template>
     <script>
         Polymer('float-drawer', {
+            isOpen: false,
+            openWidth: '200px',
+            closedWidth: '20px',
             toggleLabel: '<',
+            ready: function () {
+                this.update();
+            },
             toggle: function () {
-                if(this.style.width != "200px")
-                    this.style.width = "200px";
-                else
-                    this.style.width = "20px";
-
-                this.toggleLabel = this.style.width == '20px' ? '<' : '>'
+                this.isOpen = !this.isOpen;
+                this.update();
+            },
+            open: function () {
+                this.isOpen = true;
+                this.update();
+            },
+            close: function () {
+                this.isOpen = false;
+                this.update();
+            },
+            update: function () {
+                if(this.isOpen) {
+                    this.style.width = this.openWidth;
+                    this.toggleLabel = '>';
+                } else {
+                    this.style.width = this.closedWidth;
+                    this.toggleLabel = '<';
+                }
             }
         });
     </script>
