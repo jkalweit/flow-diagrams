@@ -17,7 +17,7 @@
 
         <h2>Diagrams</h2>
         <template repeat="{{diagram in diagrams.list}}">
-            <item-button label="{{diagram.title}}" item="{{diagram}}" on-itemclick="{{select}}" style="width: 100%"></item-button><br/>
+            <item-button label="{{diagram.title ? diagram.title : '[No Title]'}}" item="{{diagram}}" on-itemclick="{{select}}" style="width: 100%"></item-button><br/>
         </template>
     </template>
     <script>
@@ -45,20 +45,15 @@
                 });
             },
             saveList: function() {
-                if(this.selected && !this.selected.id) {
+                if(this.selected && Object.keys(this.selected).length > 0 && !this.selected.id) {
                     this.selected.id = ++this.diagrams.currId;
                     this.diagrams.list.push(this.selected);
                 }
                 localStorage.setItem('diagrams', JSON.stringify(this.diagrams));
             },
             newDiagram: function () {
-                this.selected = {
-                    id: ++this.diagrams.currId,
-                    title: 'New Diagram',
-                    nodes: []
-                };
-                this.diagrams.list.push(this.selected);
                 this.saveList();
+                this.selected = {};
             },
             select: function (e) {
                 this.selected = e.detail.item;
