@@ -5,6 +5,15 @@
     </template>
     <script>
         Polymer('click-elsewhere', {
+            attached: function() {
+                if (!this.clickelement) {
+                    if(this.parentElement) {
+                        this.clickelement = this.parentElement;
+                    } else if (this.parentNode.host) {
+                        this.clickelement = this.parentNode.host;
+                    }
+                }
+                },
             ready: function() {
                 document.addEventListener('click', function (e) {
                     if(!this.clickelement)
@@ -14,9 +23,9 @@
 
                     if(e.x >= rect.left && e.x < rect.right && e.y >= rect.top && e.y < rect.bottom) {
                         //console.log('inside!');
-                        this.fire('clickinside', null);
+                        this.fire('clickinside', e);
                     } else {
-                        this.fire('clickoutside', null);
+                        this.fire('clickoutside', e);
                         //console.log('outside!');
                     }
                 }.bind(this));

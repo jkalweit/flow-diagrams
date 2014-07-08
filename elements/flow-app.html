@@ -23,7 +23,7 @@
 
 
         <float-drawer id="drawer">
-            <div style="width: 180px;">
+            <div style="width: 180px; padding-left: 20px;">
                 <h1>Menu</h1>
                 <paper-button label="Save" icon="save" on-click="{{save}}" style="text-align: left"></paper-button>
                 <paper-button label="Reload" icon="undo" on-click="{{load}}" style="text-align: left"></paper-button>
@@ -32,7 +32,6 @@
         </float-drawer>
 
         <flow-diagram data="{{data}}"></flow-diagram>
-
 
     </template>
     <script>

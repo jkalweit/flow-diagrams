@@ -22,18 +22,14 @@
 
         </style>
 
-        <div id="clickTarget" style="position: absolute; top: 0;left: 0; height: 100%; width: 100%;">
-        </div>
+        <click-elsewhere on-clickoutside="{{close}}" on-clickinside="{{open}}"></click-elsewhere>
 
-        <click-elsewhere clickelement="{{$.clickTarget}}" on-clickoutside="{{close}}" on-clickinside="{{open}}"></click-elsewhere>
+        <paper-shadow z="2"></paper-shadow>
 
-        <paper-shadow z="2"></div>
+        <paper-button label="{{toggleLabel}}" on-click="{{toggle}}"
+                      style="font-weight: bold; font-size: 20px; color: #333333;"></paper-button>
 
-        <paper-button label="{{toggleLabel}}" on-click="{{toggle}}" style="font-weight: bold; font-size: 20px; color: #333333;"></paper-button>
-
-        <div style="padding-left: 20px;">
-            <content></content>
-        </div>
+        <content></content>
 
     </template>
     <script>
@@ -58,7 +54,7 @@
                 this.update();
             },
             update: function () {
-                if(this.isOpen) {
+                if (this.isOpen) {
                     this.style.width = this.openWidth;
                     this.toggleLabel = '>';
                 } else {
