@@ -19,6 +19,7 @@
         </style>
         <paper-input label="Title" value="{{data.title}}" style="font-size: 30px; font-weight: bold;"></paper-input> <br/>
         <paper-button label="Add Node" icon="add" on-click="{{addNode}}"></paper-button>
+        <paper-button label="Delete Diagram" icon="delete" on-click="{{deleteDiagram}}" style="float: right;"></paper-button>
         <div style="position: absolute; top: 160px; left: 0px; width: 100%; height: 100%; background-color: #dddddd">
             <template repeat="{{node in data.nodes}}">
                 <flow-node node="{{node}}" on-delete="{{deleteNode}}"></flow-node>
@@ -48,6 +49,9 @@
                         this.data.nodes.splice(i, 1);
                     }
                 }
+            },
+            deleteDiagram: function () {
+                this.fire('delete', { id: this.data.id });
             }
         });
     </script>

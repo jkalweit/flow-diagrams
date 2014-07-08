@@ -2,6 +2,7 @@
 <link rel="import" href="../bower_components/core-icon-button/core-icon-button.html">
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
 <link rel="import" href="float-drawer.html">
+<link rel="import" href="flow-diagramlist.html">
 <link rel="import" href="flow-diagram.html">
 
 <polymer-element name="flow-app" attributes="data">
@@ -21,44 +22,19 @@
             }
         </style>
 
-
         <float-drawer id="drawer">
-            <div style="width: 180px; padding-left: 20px;">
-                <h1>Menu</h1>
-                <paper-button label="Save" icon="save" on-click="{{save}}" style="text-align: left"></paper-button>
-                <paper-button label="Reload" icon="undo" on-click="{{load}}" style="text-align: left"></paper-button>
-                <paper-button label="Load Demo" icon="undo" on-click="{{loadDemo}}" style="text-align: left"></paper-button>
+            <div style="width: 250px;">
+                <flow-diagramlist id="list" selected="{{selected}}"></flow-diagramlist>
             </div>
         </float-drawer>
 
-        <flow-diagram data="{{data}}"></flow-diagram>
+        <flow-diagram data="{{selected}}" on-delete="{{deleteDiagram}}"></flow-diagram>
 
     </template>
     <script>
         Polymer('flow-app', {
-            ready: function () {
-                this.load();
-            },
-            load: function () {
-                var d = localStorage.getItem('diagram1');
-                if(d !== null)
-                    this.data = JSON.parse(d);
-                else
-                    this.data = { title: 'New Diagram', "currentNodeId": 0, nodes: [] };
-            },
-            save: function() {
-                localStorage.setItem('diagram1', JSON.stringify(this.data));
-            },
-            loadDemo: function () {
-                var xobj = new XMLHttpRequest();
-                xobj.overrideMimeType("application/json");
-                xobj.open('GET', 'demo.json', true);
-                xobj.onreadystatechange = function () {
-                    if (xobj.readyState == 4 && xobj.status == "200") {
-                        this.data = JSON.parse(xobj.responseText);
-                    }
-                }.bind(this);
-                xobj.send(null);
+            deleteDiagram: function (e) {
+                this.$.list.deleteDiagram(e.detail.id);
             }
         });
     </script>

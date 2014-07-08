@@ -1,0 +1,91 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="item-button.html">
+
+<polymer-element name="flow-diagramlist" attributes="data selected">
+    <template>
+        <style>
+            :host {
+                width: 100%;
+            }
+        </style>
+        <h1>Menu</h1>
+        <paper-button label="Save" icon="save" on-click="{{saveList}}" style="text-align: left"></paper-button>
+        <paper-button label="New Diagram" icon="add" on-click="{{newDiagram}}"></paper-button>
+        <paper-button label="Load Demo" icon="undo" on-click="{{loadDemo}}" style="text-align: left"></paper-button>
+
+
+        <h2>Diagrams</h2>
+        <template repeat="{{diagram in diagrams.list}}">
+            <item-button label="{{diagram.title}}" item="{{diagram}}" on-itemclick="{{select}}" style="width: 100%"></item-button><br/>
+        </template>
+    </template>
+    <script>
+        Polymer('flow-diagramlist', {
+            diagrams: {},
+            selected: {},
+            ready: function () {
+                this.loadList();
+            },
+            loadList: function () {
+                var d = localStorage.getItem('diagrams');
+                if(d !== null)
+                    this.diagrams = JSON.parse(d);
+                else
+                    this.diagrams = {
+                        currId: 0,
+                        list: []
+                    }
+                this.diagrams.list.sort(function compare(a,b) {
+                    if (a.title < b.title)
+                        return -1;
+                    if (a.title > b.title)
+                        return 1;
+                    return 0;
+                });
+            },
+            saveList: function() {
+                if(this.selected && !this.selected.id) {
+                    this.selected.id = ++this.diagrams.currId;
+                    this.diagrams.list.push(this.selected);
+                }
+                localStorage.setItem('diagrams', JSON.stringify(this.diagrams));
+            },
+            newDiagram: function () {
+                this.selected = {
+                    id: ++this.diagrams.currId,
+                    title: 'New Diagram',
+                    nodes: []
+                };
+                this.diagrams.list.push(this.selected);
+                this.saveList();
+            },
+            select: function (e) {
+                this.selected = e.detail.item;
+            },
+            deleteDiagram: function (id) {
+                for(var i = 0; i < this.diagrams.list.length; i++){
+                    if(this.diagrams.list[i].id ==  id) {
+                        if(confirm('Delete diagram: ' + this.diagrams.list[i].title + '?')) {
+                            this.diagrams.list.splice(i, 1);
+                            if(this.selected && this.selected.id == id)
+                                this.selected = {};
+                        }
+                    }
+                }
+                this.saveList();
+            },
+            loadDemo: function () {
+                var xobj = new XMLHttpRequest();
+                xobj.overrideMimeType("application/json");
+                xobj.open('GET', 'demo.json', true);
+                xobj.onreadystatechange = function () {
+                    if (xobj.readyState == 4 && xobj.status == "200") {
+                        this.selected = JSON.parse(xobj.responseText);
+                    }
+                }.bind(this);
+                xobj.send(null);
+            }
+        });
+    </script>
+</polymer-element>
