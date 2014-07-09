@@ -1,4 +1,5 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/core-signals/core-signals.html">
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
 <link rel="import" href="item-button.html">
 
@@ -9,6 +10,9 @@
                 width: 100%;
             }
         </style>
+
+        <core-signals on-core-signal-navigate="{{navigate}}"></core-signals>
+
         <h1>Menu</h1>
         <paper-button label="Save" icon="save" on-click="{{saveList}}" style="text-align: left"></paper-button>
         <paper-button label="New Diagram" icon="add" on-click="{{newDiagram}}"></paper-button>
@@ -18,7 +22,7 @@
 
         <h2>Diagrams</h2>
         <template repeat="{{diagram in diagrams.list}}">
-            <item-button label="{{diagram.title ? diagram.title : '[No Title]'}}" item="{{diagram}}" on-itemclick="{{select}}" style="width: 100%"></item-button><br/>
+            <item-button label="{{(diagram.title ? diagram.title : '[No Title]') + ' (' + diagram.id + ')'}}" item="{{diagram}}" on-itemclick="{{select}}" style="width: 100%"></item-button><br/>
         </template>
     </template>
     <script>
@@ -44,6 +48,8 @@
                         return 1;
                     return 0;
                 });
+                if(this.diagrams.list.length > 0)
+                    this.selected = this.diagrams.list[0];
             },
             saveList: function() {
                 if(this.selected && (this.selected.title != '' || (this.selected.nodes && this.selected.nodes.length > 0)) && !this.selected.id) {
@@ -75,6 +81,13 @@
                             return;
                         }
                     }
+                }
+            },
+            navigate: function(e, detail, sender) {
+                var diagram;
+                for(var i = 0; i < this.diagrams.list.length; i++){
+                    if(this.diagrams.list[i].id == detail.id)
+                        this.selected = this.diagrams.list[i];
                 }
             },
             loadDemo: function () {

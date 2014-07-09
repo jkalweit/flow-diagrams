@@ -1,21 +1,65 @@
-{"currId": 5, "list": [
+{"VisualAidId": 699, "VisualAidTypeId": 1, "VisualAidType2Id": null, "VisualAidType3Id": null, "VisualAidType4Id": null, "Name": "Lobby Screensaver", "CreatedBy": "debug", "CreatedDate": "1971-05-19T00:00:00", "CustCode": null, "CustName": null, "FoundBy": null, "FoundByNote": null, "CreatedByName": "Debug User                                        ", "FoundByName": null, "ResolutionRequired": false, "ResolutionDate": null, "ResolutionId": null, "ResolvedBy": null, "ResolvedByName": null, "ResolutionNote": null, "AdditionalActionsRequired": true, "Action": "Additional Action", "NotifiedUser": null, "NotifiedUserName": null, "NotifiedNote": null, "NotificationDate": "2013-12-31T00:00:00", "ImmediateAction": 5, "ImmediateActionNote": null, "Cause": 2, "CauseNote": "Cause #2 Note - Added a little more text to see how it would lay out", "PreventiveAction": 11, "PreventiveActionNote": "Preventive Action #2 Note", "VisualAidType": null, "VisualAidType2": null, "VisualAidType3": null, "VisualAidType4": null, "VisualAidItems": [
     {
-        "id": 1,
-        "title": "New Diagram",
-        "nodes": []
+        "VisualAidItemId": 1183,
+        "VisualAidId": 699,
+        "SortOrder": 2,
+        "Description": "Metallurgical Lab",
+        "AttachmentId": 1623
     },
     {
-        "id": 3,
-        "title": "New Diagram",
-        "nodes": []
+        "VisualAidItemId": 1212,
+        "VisualAidId": 699,
+        "SortOrder": 1,
+        "Description": "Welcome to IMT Duncan",
+        "AttachmentId": 1659
     },
     {
-        "id": 4,
-        "title": ""
+        "VisualAidItemId": 1245,
+        "VisualAidId": 699,
+        "SortOrder": 3,
+        "Description": "Dual Monitor Work Stations",
+        "AttachmentId": 1627
     },
     {
-        "id": 5,
-        "title": "New Diagram",
-        "nodes": []
+        "VisualAidItemId": 1246,
+        "VisualAidId": 699,
+        "SortOrder": 4,
+        "Description": "Fingerprint Protected Process Control",
+        "AttachmentId": 1628
+    },
+    {
+        "VisualAidItemId": 1267,
+        "VisualAidId": 699,
+        "SortOrder": 5,
+        "Description": "72 x 72 Inch Pit Furnace",
+        "AttachmentId": 1663
+    },
+    {
+        "VisualAidItemId": 1268,
+        "VisualAidId": 699,
+        "SortOrder": 9,
+        "Description": "We Never Sleep",
+        "AttachmentId": 1661
+    },
+    {
+        "VisualAidItemId": 1269,
+        "VisualAidId": 699,
+        "SortOrder": 6,
+        "Description": "AFC Mesh Belt Line",
+        "AttachmentId": 1664
+    },
+    {
+        "VisualAidItemId": 1270,
+        "VisualAidId": 699,
+        "SortOrder": 7,
+        "Description": "Closed Loop Requisition System",
+        "AttachmentId": 1665
+    },
+    {
+        "VisualAidItemId": 1271,
+        "VisualAidId": 699,
+        "SortOrder": 8,
+        "Description": "Recurring Task System",
+        "AttachmentId": 1666
     }
-]}
+], "VisualAidRequisitions": []}

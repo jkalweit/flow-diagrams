@@ -1,4 +1,6 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/core-menu-button/core-menu-button.html">
+<link rel="import" href="../bower_components/core-item/core-item.html">
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
 <link rel="import" href="../bower_components/paper-dialog/paper-dialog-transition.html">
@@ -109,7 +111,7 @@
             }
         </style>
 
-        <div class="node" style="">
+        <div class="node">
 
             <div class="overlay">
                 <div class="handle line" style="bottom: 0; left: {{(node.width / 2) - 5}}px;" on-click="{{toggleLineBottom}}">
@@ -123,6 +125,9 @@
                 <div class="handle" style="top: 0; right: 0;" on-mousedown="{{drag}}">
                 </div>
                 <div class="handle" style="top: 0; left: 0; background-color: white;" on-click="{{select}}">
+                </div>
+
+                <div class="handle" style="top: 0; left: 25%; background-color: purple;" on-click="{{navigate}}">
                 </div>
             </div>
 
@@ -171,6 +176,15 @@
             <br/>
             <paper-input floatingLabel label="Text" value="{{node.text}}" style="font-size: 24px; font-weight: bold"></paper-input><br />
             <paper-input floatingLabel label="Color" value="{{node.bgColor}}" style="font-size: 24px; font-weight: bold; color: #777777; background-color: {{node.bgColor}}"></paper-input><br />
+
+            <paper-input floatingLabel label="Link ID" value="{{node.linkId}}" validate="^[0-9]*$" error="Input is not a number!" style="font-size: 18px; font-weight: bold"></paper-input><br />
+
+            <!--<core-menu-button icon="menu" selected="{{selection}}">-->
+                <!--<template repeat="{{diagram in diagrams}}">-->
+                    <!--<core-item label="{{diagram.title}}"></core-item>-->
+                <!--</template>-->
+            <!--</core-menu-button> <br/>-->
+
             <paper-input floatingLabel label="Width" value="{{node.width}}" validate="^[0-9]*$" error="Input is not a number!" style="font-size: 18px; font-weight: bold"></paper-input><br />
             <paper-input floatingLabel label="Height" value="{{node.height}}" validate="^[0-9]*$" error="Input is not a number!" style="font-size: 18px; font-weight: bold"></paper-input><br />
             <!--<paper-input floatingLabel label="Top" value="{{node.top}}" validate="^[0-9]*$" error="Input is not a number!" style="font-size: 18px; font-weight: bold"></paper-input><br />-->
@@ -196,10 +210,11 @@
             <paper-checkbox checked="{{node.lineLeftArrowReverse}}"></paper-checkbox> Reverse
             <br />
 
+
+
             <paper-button label="Delete" icon="delete" on-click="{{delete}}" dismissive></paper-button>
             <paper-button label="Ok" icon="check" affirmative default></paper-button>
 
-            </div>
 
         </paper-dialog>
 
@@ -209,6 +224,12 @@
             dragging: false,
             dragnodestart: null,
             dragstart: null,
+            diagrams: [{title: 'test1'}, {title: 'test2'}],
+            navigate: function () {
+                if(this.node.linkId) {
+                    this.fire('core-signal', { name: "navigate", data: { id: this.node.linkId }});
+                }
+            },
             select: function () {
                 this.$.settings.opened = true;
             },
