@@ -12,6 +12,7 @@
         <h1>Menu</h1>
         <paper-button label="Save" icon="save" on-click="{{saveList}}" style="text-align: left"></paper-button>
         <paper-button label="New Diagram" icon="add" on-click="{{newDiagram}}"></paper-button>
+        <paper-button label="Delete Diagram" icon="delete" on-click="{{deleteDiagram}}"></paper-button>
         <paper-button label="Load Demo" icon="undo" on-click="{{loadDemo}}" style="text-align: left"></paper-button>
 
 
@@ -45,7 +46,7 @@
                 });
             },
             saveList: function() {
-                if(this.selected && Object.keys(this.selected).length > 0 && !this.selected.id) {
+                if(this.selected && (this.selected.title != '' || (this.selected.nodes && this.selected.nodes.length > 0)) && !this.selected.id) {
                     this.selected.id = ++this.diagrams.currId;
                     this.diagrams.list.push(this.selected);
                 }
@@ -58,18 +59,23 @@
             select: function (e) {
                 this.selected = e.detail.item;
             },
-            deleteDiagram: function (id) {
+            deleteDiagram: function () {
+                if(!this.selected)
+                    return;
+                if(!this.selected.id){
+                    this.selected = {};
+                    return;
+                }
                 for(var i = 0; i < this.diagrams.list.length; i++){
-                    if(this.diagrams.list[i].id ==  id) {
+                    if(this.diagrams.list[i].id ==  this.selected.id) {
                         if(confirm('Delete diagram: ' + this.diagrams.list[i].title + '?')) {
                             this.diagrams.list.splice(i, 1);
-                            if(this.selected && this.selected.id == id)
-                                this.selected = {};
+                            this.selected = {};
+                            this.saveList();
+                            return;
                         }
                     }
-
                 }
-                this.saveList();
             },
             loadDemo: function () {
                 var xobj = new XMLHttpRequest();
@@ -77,7 +83,8 @@
                 xobj.open('GET', 'demo.json', true);
                 xobj.onreadystatechange = function () {
                     if (xobj.readyState == 4 && xobj.status == "200") {
-                        this.selected = JSON.parse(xobj.responseText);
+                        this.diagrams = JSON.parse(xobj.responseText);
+                        this.selected = this.diagrams.list[0];
                     }
                 }.bind(this);
                 xobj.send(null);

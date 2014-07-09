@@ -3,6 +3,7 @@
 <link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
 <link rel="import" href="../bower_components/paper-dialog/paper-dialog-transition.html">
 <link rel="import" href="../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../bower_components/paper-checkbox/paper-checkbox.html">
 
 <polymer-element name="flow-node" attributes="node">
     <template>
@@ -27,8 +28,14 @@
 
                 text-align: center;
                 z-index: 1;
-                line-height: {{node.height}}px;
+                line-height: {{node.height }}px;
                 background: {{node.bgColor}};
+            }
+
+            .node span {
+                display: inline-block;
+                vertical-align: middle;
+                line-height: normal;
             }
 
             paper-dialog {
@@ -42,14 +49,42 @@
                 width: 0px;
                 height: 4px;
                 z-index: 0;
+                transform-origin:50% 0%;
+                -webkit-transform-origin:0% 0%;
             }
 
             .line.bottom-line {
+                transform: rotate(90deg);
                 -webkit-transform: rotate(90deg);
-                -webkit-transform-origin:0% 0%;
             }
             .line.right-line {
             }
+            .line.top-line {
+                transform: rotate(270deg);
+                -webkit-transform: rotate(270deg);
+            }
+            .line.left-line {
+                transform: rotate(180deg);
+                -webkit-transform: rotate(180deg);
+            }
+
+            .line img {
+                position: absolute;
+                width: 20px;
+                height: 20px;
+                bottom: -8px;
+                right: -5px;
+            }
+            .line img.reverse {
+                position: absolute;
+                width: 20px;
+                height: 20px;
+                bottom: -8px;
+                left: -5px;
+                transform: rotate(180deg);
+                -webkit-transform: rotate(180deg);
+            }
+
             .handle {
                 position: absolute;
                 width: 10px;
@@ -81,6 +116,10 @@
                 </div>
                 <div class="handle line" style="top: {{(node.height / 2) - 5}}px; right: 0" on-click="{{toggleLineRight}}">
                 </div>
+                <div class="handle line" style="top: 0; left: {{(node.width / 2) - 5}}px;" on-click="{{toggleLineTop}}">
+                </div>
+                <div class="handle line" style="top: {{(node.height / 2) - 5}}px; left: 0" on-click="{{toggleLineLeft}}">
+                </div>
                 <div class="handle" style="top: 0; right: 0;" on-mousedown="{{drag}}">
                 </div>
                 <div class="handle" style="top: 0; left: 0; background-color: white;" on-click="{{select}}">
@@ -91,10 +130,41 @@
             <paper-shadow z="{{$.settings.opened || dragging ? 2 : 1}}"></paper-shadow>
         </div>
 
-        <div class="line bottom-line" style="top: {{node.height}}px; left: {{(node.width/2)+2}}px; width: {{node.lineLengthBottom}}px"></div>
+        <div class="line bottom-line" style="top: {{node.height}}px; left: {{(node.width/2)+2}}px; width: {{node.lineBottomLength}}px">
+            <template if="{{node.lineBottomArrowForward}}">
+                <img src="arrow2.png" />
+            </template>
+            <template if="{{node.lineBottomArrowReverse}}">
+                <img src="arrow2.png" class="reverse" />
+            </template>
+        </div>
 
-        <div class="line right-line" style="top: {{(node.height/2)-2}}px; left: {{node.width}}px; width: {{node.lineLengthRight}}px"></div>
+        <div class="line right-line" style="top: {{(node.height/2)-2}}px; left: {{node.width}}px; width: {{node.lineRightLength}}px">
+            <template if="{{node.lineRightArrowForward}}">
+                <img src="arrow2.png" />
+            </template>
+            <template if="{{node.lineRightArrowReverse}}">
+                <img src="arrow2.png" class="reverse" />
+            </template>
+        </div>
 
+        <div class="line top-line" style="top: 0px; left: {{(node.width/2)-2}}px; width: {{node.lineTopLength}}px">
+            <template if="{{node.lineTopArrowForward}}">
+                <img src="arrow2.png" />
+            </template>
+            <template if="{{node.lineTopArrowReverse}}">
+                <img src="arrow2.png" class="reverse" />
+            </template>
+        </div>
+
+        <div class="line left-line" style="top: {{(node.height/2)+2}}px; left: 0px; width: {{node.lineLeftLength}}px">
+            <template if="{{node.lineLeftArrowForward}}">
+                <img src="arrow2.png" />
+            </template>
+            <template if="{{node.lineLeftArrowReverse}}">
+                <img src="arrow2.png" class="reverse" />
+            </template>
+        </div>
 
         <paper-dialog id="settings" transition="paper-dialog-transition-bottom" style="background-color: transparent">
             <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: white; z-index: -1; opacity: .75;"></div>
@@ -105,8 +175,26 @@
             <paper-input floatingLabel label="Height" value="{{node.height}}" validate="^[0-9]*$" error="Input is not a number!" style="font-size: 18px; font-weight: bold"></paper-input><br />
             <!--<paper-input floatingLabel label="Top" value="{{node.top}}" validate="^[0-9]*$" error="Input is not a number!" style="font-size: 18px; font-weight: bold"></paper-input><br />-->
             <!--<paper-input floatingLabel label="Left" value="{{node.left}}" validate="^[0-9]*$" error="Input is not a number!" style="font-size: 18px; font-weight: bold"></paper-input><br />-->
-            <paper-input floatingLabel label="Line Bottom" value="{{node.lineLengthBottom}}" validate="^[0-9]*$" error="Input is not a number!" style="font-size: 18px; font-weight: bold"></paper-input><br />
-            <paper-input floatingLabel label="Line Right" value="{{node.lineLengthRight}}" validate="^[0-9]*$" error="Input is not a number!" style="font-size: 18px; font-weight: bold"></paper-input><br />
+
+            <paper-input floatingLabel label="Line Bottom" value="{{node.lineBottomLength}}" validate="^[0-9]*$" error="Input is not a number!" style="font-size: 18px; font-weight: bold"></paper-input>
+            <paper-checkbox checked="{{node.lineBottomArrowForward}}"></paper-checkbox> Forward
+            <paper-checkbox checked="{{node.lineBottomArrowReverse}}"></paper-checkbox> Reverse
+            <br />
+
+            <paper-input floatingLabel label="Line Right" value="{{node.lineRightLength}}" validate="^[0-9]*$" error="Input is not a number!" style="font-size: 18px; font-weight: bold"></paper-input>
+            <paper-checkbox checked="{{node.lineRightArrowForward}}"></paper-checkbox> Forward
+            <paper-checkbox checked="{{node.lineRightArrowReverse}}"></paper-checkbox> Reverse
+            <br />
+
+            <paper-input floatingLabel label="Line Top" value="{{node.lineTopLength}}" validate="^[0-9]*$" error="Input is not a number!" style="font-size: 18px; font-weight: bold"></paper-input>
+            <paper-checkbox checked="{{node.lineTopArrowForward}}"></paper-checkbox> Forward
+            <paper-checkbox checked="{{node.lineTopArrowReverse}}"></paper-checkbox> Reverse
+            <br />
+
+            <paper-input floatingLabel label="Line Left" value="{{node.lineLeftLength}}" validate="^[0-9]*$" error="Input is not a number!" style="font-size: 18px; font-weight: bold"></paper-input>
+            <paper-checkbox checked="{{node.lineLeftArrowForward}}"></paper-checkbox> Forward
+            <paper-checkbox checked="{{node.lineLeftArrowReverse}}"></paper-checkbox> Reverse
+            <br />
 
             <paper-button label="Delete" icon="delete" on-click="{{delete}}" dismissive></paper-button>
             <paper-button label="Ok" icon="check" affirmative default></paper-button>
@@ -154,16 +242,28 @@
                     return val + (grid - offset);
             },
             toggleLineBottom: function() {
-                this.toggleLine('lineLengthBottom');
+                this.toggleLine('lineBottom');
             },
             toggleLineRight: function() {
-                this.toggleLine('lineLengthRight');
+                this.toggleLine('lineRight');
+            },
+            toggleLineTop: function() {
+                this.toggleLine('lineTop');
+            },
+            toggleLineLeft: function() {
+                this.toggleLine('lineLeft');
             },
             toggleLine: function (prop) {
-                if(this.node[prop] == 0)
-                    this.node[prop] = 50;
-                else
-                    this.node[prop] = 0;
+                if(this.node[prop + 'Length'] == 0) {
+                    this.node[prop + 'Length'] = 50;
+                    this.node[prop + 'ArrowForward'] = true;
+                    this.node[prop + 'ArrowReverse'] = false;
+                }
+                else {
+                    this.node[prop + 'Length'] = 0;
+                    this.node[prop + 'ArrowForward'] = false;
+                    this.node[prop + 'ArrowReverse'] = false;
+                }
             }
         });
     </script>
