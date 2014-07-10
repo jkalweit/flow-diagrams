@@ -20,29 +20,45 @@
                 overflow: hidden;
             }
 
+            .keep {
+                transform: rotate(90deg);
+                -webkit-transform: rotate(90deg);
+                fill: #0000ee;
+            }
+
         </style>
 
         <click-elsewhere on-clickoutside="{{close}}" on-clickinside="{{open}}"></click-elsewhere>
 
-        <paper-shadow z="2"></paper-shadow>
+        <paper-shadow z="{{keep ? 1 : 2}}"></paper-shadow>
 
-        <paper-button label="{{toggleLabel}}" on-click="{{toggle}}"
-                      style="font-weight: bold; font-size: 20px; color: #333333;"></paper-button>
+
+        <paper-button class="{{ {keep: keep} | tokenList }}" icon="keep" on-click="{{toggleKeep}}" style="font-weight: bold; font-size: 20px; color: #333333;"></paper-button>
 
         <content></content>
 
     </template>
     <script>
         Polymer('float-drawer', {
-            isOpen: false,
+            isOpen: true,
             openWidth: '270px',
             closedWidth: '20px',
-            toggleLabel: '<',
+            keep: true,
             ready: function () {
                 this.update();
             },
+            toggleKeep: function () {
+                this.keep = !this.keep;
+                this.isOpen = this.keep;
+                this.update();
+            },
             toggle: function () {
-                this.isOpen = !this.isOpen;
+                if(!this.keep) {
+                    this.isOpen = !this.isOpen;
+                } else {
+                    this.isOpen = true;
+                }
+
                 this.update();
             },
             open: function () {
@@ -50,16 +66,16 @@
                 this.update();
             },
             close: function () {
-                this.isOpen = false;
-                this.update();
+                if(!this.keep) {
+                    this.isOpen = false;
+                    this.update();
+                }
             },
             update: function () {
                 if (this.isOpen) {
                     this.style.width = this.openWidth;
-                    this.toggleLabel = '>';
                 } else {
                     this.style.width = this.closedWidth;
-                    this.toggleLabel = '<';
                 }
             }
         });

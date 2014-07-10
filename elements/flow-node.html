@@ -28,13 +28,21 @@
                 width: 100%;
                 height: 100%;
 
-                text-align: center;
                 z-index: 1;
                 line-height: {{node.height }}px;
                 background: {{node.bgColor}};
             }
 
-            .node span {
+            .node .text {
+                margin-left: 5px;
+                margin-right: 5px;
+                text-align: center;
+                list-style: 1em;
+            }
+            .node .text.linked {
+                margin-right: 40px;
+            }
+            .node .text span {
                 display: inline-block;
                 vertical-align: middle;
                 line-height: normal;
@@ -89,8 +97,8 @@
 
             .handle {
                 position: absolute;
-                width: 10px;
-                height: 10px;
+                width: 14px;
+                height: 14px;
                 background-color: black;
             }
             .handle.line {
@@ -104,6 +112,7 @@
                 left: 0;
                 height: 100%;
                 width: 100%;
+                z-index: 2;
             }
 
             .overlay:hover {
@@ -111,7 +120,9 @@
             }
         </style>
 
-        <div class="node">
+        <div class="node" on-click="{{navigate}}">
+
+            <paper-shadow z="{{$.settings.opened || dragging ? 2 : 1}}"></paper-shadow>
 
             <div class="overlay">
                 <div class="handle line" style="bottom: 0; left: {{(node.width / 2) - 5}}px;" on-click="{{toggleLineBottom}}">
@@ -126,13 +137,19 @@
                 </div>
                 <div class="handle" style="top: 0; left: 0; background-color: white;" on-click="{{select}}">
                 </div>
-
-                <div class="handle" style="top: 0; left: 25%; background-color: purple;" on-click="{{navigate}}">
-                </div>
             </div>
 
-            <span>{{node.text}}</span>
-            <paper-shadow z="{{$.settings.opened || dragging ? 2 : 1}}"></paper-shadow>
+            <template if="{{node.linkId}}">
+                <div style="position: absolute; right: 0; top: 0; width: 40px; height: 100%;">
+                    <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: black; height: 100%; opacity: .5; border-top-right-radius: 5px; border-bottom-right-radius: 5px;">
+                    </div>
+                    <paper-button icon="launch" on-click="{{navigate}}" style="fill: white"></paper-button>
+                </div>
+            </template>
+
+            <div class="text {{ {linked: node.linkId } | tokenList }}" style="height: 100%;">
+                <span>{{node.text}}</span>
+            </div>
         </div>
 
         <div class="line bottom-line" style="top: {{node.height}}px; left: {{(node.width/2)+2}}px; width: {{node.lineBottomLength}}px">
@@ -226,6 +243,7 @@
             dragstart: null,
             diagrams: [{title: 'test1'}, {title: 'test2'}],
             navigate: function () {
+                console.log('navigate');
                 if(this.node.linkId) {
                     this.fire('core-signal', { name: "navigate", data: { id: this.node.linkId }});
                 }
@@ -265,7 +283,8 @@
             toggleLineBottom: function() {
                 this.toggleLine('lineBottom');
             },
-            toggleLineRight: function() {
+            toggleLineRight: function(e) {
+                detail.cancelBubble();
                 this.toggleLine('lineRight');
             },
             toggleLineTop: function() {

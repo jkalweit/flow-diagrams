@@ -9,9 +9,13 @@
             :host {
                 width: 100%;
             }
+            .selected {
+                color: #0000ee;
+            }
         </style>
 
-        <core-signals on-core-signal-navigate="{{navigate}}"></core-signals>
+        <core-signals on-core-signal-navigate="{{handleNavigate}}"></core-signals>
+        <core-signals on-core-signal-diagram-ready="{{loadFirstDiagram}}"></core-signals>
 
         <h1>Menu</h1>
         <paper-button label="Save" icon="save" on-click="{{saveList}}" style="text-align: left"></paper-button>
@@ -22,7 +26,7 @@
 
         <h2>Diagrams</h2>
         <template repeat="{{diagram in diagrams.list}}">
-            <item-button label="{{(diagram.title ? diagram.title : '[No Title]') + ' (' + diagram.id + ')'}}" item="{{diagram}}" on-itemclick="{{select}}" style="width: 100%"></item-button><br/>
+            <item-button class="{{ {selected: selected.id == diagram.id } | tokenList }}" label="{{(diagram.title ? diagram.title : '[No Title]') + ' (' + diagram.id + ')'}}" item="{{diagram}}" on-itemclick="{{select}}" style="width: 100%"></item-button><br/>
         </template>
     </template>
     <script>
@@ -30,9 +34,10 @@
             diagrams: {},
             selected: {},
             ready: function () {
-                this.loadList();
+                setTimeout(this.loadList.bind(this), 500);
             },
             loadList: function () {
+                console.log('load list');
                 var d = localStorage.getItem('diagrams');
                 if(d !== null)
                     this.diagrams = JSON.parse(d);
@@ -49,7 +54,7 @@
                     return 0;
                 });
                 if(this.diagrams.list.length > 0)
-                    this.selected = this.diagrams.list[0];
+                    this.navigateHelper(this.diagrams.list[0]);
             },
             saveList: function() {
                 if(this.selected && (this.selected.title != '' || (this.selected.nodes && this.selected.nodes.length > 0)) && !this.selected.id) {
@@ -60,35 +65,57 @@
             },
             newDiagram: function () {
                 this.saveList();
-                this.selected = {};
+                this.navigateHelper({});
             },
             select: function (e) {
-                this.selected = e.detail.item;
+                this.navigate(e.detail.item.id);
             },
             deleteDiagram: function () {
                 if(!this.selected)
                     return;
-                if(!this.selected.id){
-                    this.selected = {};
-                    return;
-                }
+
+                this.saveList();
+//                if(!this.selected.id){
+//                    this.selected = {};
+//                    return;
+//                }
                 for(var i = 0; i < this.diagrams.list.length; i++){
                     if(this.diagrams.list[i].id ==  this.selected.id) {
                         if(confirm('Delete diagram: ' + this.diagrams.list[i].title + '?')) {
+                            this.fire('core-signal',  {name: 'close-diagram'});
                             this.diagrams.list.splice(i, 1);
-                            this.selected = {};
                             this.saveList();
+                            this.loadList();
                             return;
                         }
                     }
                 }
             },
-            navigate: function(e, detail, sender) {
-                var diagram;
-                for(var i = 0; i < this.diagrams.list.length; i++){
-                    if(this.diagrams.list[i].id == detail.id)
-                        this.selected = this.diagrams.list[i];
+            handleNavigate: function(e, detail, sender) {
+                this.navigate(detail.id)
+            },
+            navigate: function(id) {
+                console.log('navigate! ' + id);
+                if(this.selected && this.selected.id == id){
+                    console.log('already selected: ' + id);
+                    return;
                 }
+                for(var i = 0; i < this.diagrams.list.length; i++){
+                    if(this.diagrams.list[i].id == id){
+                        this.navigateHelper(this.diagrams.list[i]);
+                        return;
+                    }
+                }
+            },
+            navigateHelper: function(diagram) {
+                this.fire('core-signal',  {name: 'close-diagram'});
+                function closed() {
+                    console.log('open the diagram!');
+                    this.removeEventListener('core-signal-diagram-closed', closed);
+                    this.selected = diagram;
+                };
+
+                this.addEventListener('core-signal-diagram-closed', closed);
             },
             loadDemo: function () {
                 var xobj = new XMLHttpRequest();

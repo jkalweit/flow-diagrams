@@ -1,4 +1,5 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/core-signals/core-signals.html">
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../bower_components/paper-input/paper-input.html">
 <link rel="import" href="flow-node.html">
@@ -11,12 +12,16 @@
                 display: block;
                 position: absolute;
                 top: 0;
-                left: 0;
+                right: 0;
                 height: 100%;
                 width: 100%;
                 padding-left: 20px;
+                transition: left .5s ease-in-out;
             }
         </style>
+
+        <core-signals on-core-signal-close-diagram="{{closeDiagram}}"></core-signals>
+
         <paper-input label="Title" value="{{data.title}}" style="font-size: 30px; font-weight: bold;"></paper-input> <br/>
         <paper-button label="Add Node" icon="add" on-click="{{addNode}}"></paper-button>
         <div style="position: absolute; top: 160px; left: 0px; width: 100%; height: 100%; background-color: #dddddd">
@@ -27,6 +32,10 @@
     </template>
     <script>
         Polymer('flow-diagram', {
+            ready: function () {
+                console.log('ready...');
+                this.fire('core-signal', { name: 'diagram-ready'});
+            },
             addNode: function () {
                 if(!this.data.nodes)
                     this.data.nodes = [];
@@ -53,6 +62,36 @@
             },
             deleteDiagram: function () {
                 this.fire('deletediagram', { id: this.data.id });
+            },
+            closeDiagram: function (e, detail, sender) {
+                console.log('closeDiagram');
+                function done() {
+                    console.log('slideout done');
+                    this.fire('core-signal', { name: 'diagram-closed'});
+                    this.removeEventListener('transitionend', done);
+                };
+
+                if(this.isShown()) {
+                    console.log('slideout');
+                    this.addEventListener('transitionend', done);
+                    this.slideOut();
+                } else {
+                    console.log('already closed');
+                    this.fire('core-signal', { name: 'diagram-closed'});
+                }
+            },
+            isShown: function() {
+                console.log('left: ' + this.style.left);
+                return this.style.left == '0px';
+            },
+            slideOut: function () {
+                this.style.left = this.getBoundingClientRect().width + 'px';
+            },
+            slideIn: function () {
+                this.style.left = '0px';
+            },
+            dataChanged: function() {
+                this.slideIn();
             }
         });
     </script>
