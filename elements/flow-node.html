@@ -120,30 +120,30 @@
             }
         </style>
 
-        <div class="node" on-click="{{navigate}}">
+        <div class="node">
 
             <paper-shadow z="{{$.settings.opened || dragging ? 2 : 1}}"></paper-shadow>
 
             <div class="overlay">
                 <div class="handle line" style="bottom: 0; left: {{(node.width / 2) - 5}}px;" on-click="{{toggleLineBottom}}">
                 </div>
-                <div class="handle line" style="top: {{(node.height / 2) - 5}}px; right: 0" on-click="{{toggleLineRight}}">
+                <div class="handle line" style="top: {{(node.height / 2) - 5}}px; right: 40px" on-click="{{toggleLineRight}}">
                 </div>
                 <div class="handle line" style="top: 0; left: {{(node.width / 2) - 5}}px;" on-click="{{toggleLineTop}}">
                 </div>
                 <div class="handle line" style="top: {{(node.height / 2) - 5}}px; left: 0" on-click="{{toggleLineLeft}}">
                 </div>
-                <div class="handle" style="top: 0; right: 0;" on-mousedown="{{drag}}">
+                <div class="handle" style="top: 0; right: 40px;" on-mousedown="{{drag}}">
                 </div>
                 <div class="handle" style="top: 0; left: 0; background-color: white;" on-click="{{select}}">
                 </div>
             </div>
 
             <template if="{{node.linkId}}">
-                <div style="position: absolute; right: 0; top: 0; width: 40px; height: 100%;">
-                    <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: black; height: 100%; opacity: .5; border-top-right-radius: 5px; border-bottom-right-radius: 5px;">
+                <div style="position: absolute; right: 0; top: 0; width: 40px; height: 100%; z-index: 3">
+                    <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: black; height: 100%; opacity: .5; border-top-right-radius: 5px; border-bottom-right-radius: 5px; cursor: pointer">
                     </div>
-                    <paper-button icon="launch" on-click="{{navigate}}" style="fill: white"></paper-button>
+                    <paper-button icon="launch" style="fill: white" on-click="{{navigate}}"></paper-button>
                 </div>
             </template>
 
@@ -284,7 +284,6 @@
                 this.toggleLine('lineBottom');
             },
             toggleLineRight: function(e) {
-                detail.cancelBubble();
                 this.toggleLine('lineRight');
             },
             toggleLineTop: function() {
