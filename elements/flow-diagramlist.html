@@ -24,22 +24,25 @@
         <paper-button label="Delete Diagram" icon="delete" on-click="{{deleteDiagram}}"></paper-button>
         <paper-button label="Load Demo" icon="undo" on-click="{{loadDemo}}" style="text-align: left"></paper-button>
 
-
         <h2>Diagrams</h2>
         <template repeat="{{diagram in diagrams.list}}">
             <item-button class="{{ {selected: selected.id == diagram.id } | tokenList }}" label="{{(diagram.title ? diagram.title : '[No Title]') + ' (' + diagram.id + ')'}}" item="{{diagram}}" on-itemclick="{{select}}" style="width: 100%"></item-button><br/>
         </template>
+
+        <!--<textarea value="{{jsonText}}" style="width: 100%; height: 100px;" readonly></textarea>-->
     </template>
     <script>
         Polymer('flow-diagramlist', {
             diagrams: {},
             selected: {},
+            jsonText: "",
             ready: function () {
                 setTimeout(this.loadList.bind(this), 500);
             },
             loadList: function () {
                 console.log('load list');
                 var d = localStorage.getItem('diagrams');
+                this.jsonText = d;
                 if(d !== null)
                     this.diagrams = JSON.parse(d);
                 else

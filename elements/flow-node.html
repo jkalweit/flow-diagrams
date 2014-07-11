@@ -193,7 +193,11 @@
             <br/>
             <paper-input floatingLabel label="Text" value="{{node.text}}" style="font-size: 24px; font-weight: bold"></paper-input><br />
             <paper-input floatingLabel label="Color" value="{{node.bgColor}}" style="font-size: 24px; font-weight: bold; color: #777777; background-color: {{node.bgColor}}"></paper-input><br />
-
+            <paper-button label="Green" on-click="{{setGreen}}" style="background-color: #00CC00"></paper-button>
+            <paper-button label="Blue" on-click="{{setBlue}}" style="background-color: #4285f4"></paper-button>
+            <paper-button label="Orange" on-click="{{setOrange}}" style="background-color: #FFCC00"></paper-button>
+            <paper-button label="Red" on-click="{{setRed}}" style="background-color: #CC0000"></paper-button>
+            <paper-button label="Dark" on-click="{{setDark}}" style="background-color: #333333"></paper-button> <br/>
             <paper-input floatingLabel label="Link ID" value="{{node.linkId}}" validate="^[0-9]*$" error="Input is not a number!" style="font-size: 18px; font-weight: bold"></paper-input><br />
 
             <!--<core-menu-button icon="menu" selected="{{selection}}">-->
@@ -303,6 +307,21 @@
                     this.node[prop + 'ArrowForward'] = false;
                     this.node[prop + 'ArrowReverse'] = false;
                 }
+            },
+            setBlue: function () {
+                this.node.bgColor = '#4285f4';
+            },
+            setGreen: function () {
+                this.node.bgColor = '#00CC00';
+            },
+            setOrange: function () {
+                this.node.bgColor = '#FFCC00';
+            },
+            setRed: function () {
+                this.node.bgColor = '#CC0000';
+            },
+            setDark: function () {
+                this.node.bgColor = '#333333';
             }
         });
     </script>
